@@ -9,5 +9,6 @@ namespace ProCon28_CS
     static class ProcessManager
     {
         public static MatProcess.Contours Contours { get; } = new MatProcess.Contours();
+        public static MatProcess.HarrisCorner Corner { get; } = new MatProcess.HarrisCorner();
     }
 }

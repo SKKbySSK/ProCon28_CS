@@ -88,15 +88,20 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContoursInfo.cs" />
+    <Compile Include="ContoursProcess\Sanitizer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IContoursProcess.cs" />
     <Compile Include="Interfaces\IMatProcess.cs" />
     <Compile Include="MatProcess\Contours.cs" />
+    <Compile Include="MatProcess\HarrisCorner.cs" />
     <Compile Include="MatProcess\ImagePreviewer.cs" />
+    <Compile Include="MatProcess\WindowProcessBase.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

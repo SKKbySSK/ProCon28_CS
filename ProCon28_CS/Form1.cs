@@ -31,8 +31,10 @@ namespace ProCon28_CS
             
             MatProcesses.Add(new MatProcess.ImagePreviewer() { ConvertColor = true, ColorConversionCode = ColorConversionCodes.BGR2GRAY });
 
-            MatProcesses.Add(ProcessManager.Contours);
-            contoursMode.SelectedIndex = (int)ProcessManager.Contours.OutputMode;
+            //MatProcesses.Add(ProcessManager.Contours);
+            //contoursMode.SelectedIndex = (int)ProcessManager.Contours.OutputMode;
+
+            MatProcesses.Add(ProcessManager.Corner);
         }
 
         private void State_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -149,11 +151,6 @@ namespace ProCon28_CS
             State.Value = CaptureState.Paused;
         }
 
-        private void contoursThresh_Scroll(object sender, EventArgs e)
-        {
-            ProcessManager.Contours.Threshold = contoursThresh.Value;
-        }
-
         private void contoursMaxVal_Scroll(object sender, EventArgs e)
         {
             ProcessManager.Contours.MaxValue = contoursMaxVal.Value;
@@ -173,6 +170,44 @@ namespace ProCon28_CS
                     ProcessManager.Contours.OutputMode = MatProcess.Contours.OutputImage.Contours;
                     break;
             }
+        }
+
+        private void cornerUseHarris_CheckedChanged(object sender, EventArgs e)
+        {
+            ProcessManager.Corner.UseHarris = cornerUseHarris.Checked;
+        }
+
+        private void cornerQuality_Scroll(object sender, EventArgs e)
+        {
+            ProcessManager.Corner.QualityLevel = cornerQuality.Value / 100.0;
+        }
+
+        private void cornerBlockSize_Scroll(object sender, EventArgs e)
+        {
+            ProcessManager.Corner.BlockSize = (int)cornerBlockSize.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!System.IO.Directory.Exists("Screenshots"))
+                System.IO.Directory.CreateDirectory("Screenshots");
+
+            for(int i = 0;MatProcesses.Count > i; i++)
+            {
+                IMatProcess proc = MatProcesses[i];
+                if(proc is MatProcess.WindowProcessBase window)
+                {
+                    IsPaused = true;
+                    string fname = "Screenshots/" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + i + ".jpg";
+                    window.SaveCurrentMat(fname);
+                    IsPaused = false;
+                }
+            }
+        }
+
+        private void cornerThresh_Scroll(object sender, EventArgs e)
+        {
+            ProcessManager.Corner.Threshold = cornerThresh.Value;
         }
     }
 

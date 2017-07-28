@@ -7,40 +7,34 @@ using OpenCvSharp;
 
 namespace ProCon28_CS.MatProcess
 {
-    class ImagePreviewer : IMatProcess
+    class ImagePreviewer : WindowProcessBase
     {
-        private Window window;
-
-        public bool UseRawMat { get; } = true;
+        public override bool UseRawMat { get; } = true;
 
         public bool ConvertColor { get; set; } = false;
 
         public ColorConversionCodes ColorConversionCode { get; set; } = ColorConversionCodes.BGR2GRAY;
 
-        public void Begin()
+        protected override string BeginProcess()
         {
-            window = new Window("Preview_" + (ConvertColor ? ColorConversionCode.ToString() : "Raw Image"));
+            return "Preview_" + (ConvertColor ? ColorConversionCode.ToString() : "Raw Image");
         }
 
-        public void End()
+        protected override void EndProcess()
         {
-            window.Dispose();
-            window = null;
         }
 
-        public void OnMatChanged(Mat Mat)
+        protected override Mat MatChanged(Mat Mat)
         {
             if (ConvertColor)
             {
-                using (Mat cvt = new Mat())
-                {
-                    Cv2.CvtColor(Mat, cvt, ColorConversionCode);
-                    window.ShowImage(cvt);
-                }
+                Mat cvt = new Mat();
+                Cv2.CvtColor(Mat, cvt, ColorConversionCode);
+                return cvt;
             }
             else
             {
-                window.ShowImage(Mat);
+                return Mat;
             }
         }
     }
